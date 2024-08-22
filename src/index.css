@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.active {
+    color: rgb(34, 105, 204) !important;
+}
+
+.row {
+    @apply flex flex-wrap px-4 py-8 items-center
+}
+
+.container {
+    width: 70%;
+    margin: 0 auto;
+
+}
