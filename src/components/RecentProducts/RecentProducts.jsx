@@ -4,26 +4,35 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 export default function RecentProducts() {
   const [recentProducts, setRecentProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(null);
 
   function getRecentPro() {
     axios
       .get("https://ecommerce.routemisr.com/api/v1/products")
       .then(({ data }) => {
         setRecentProducts(data.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   }
 
   useEffect(() => {
+    setIsLoading(true);
     getRecentPro();
   }, []);
 
   return (
     <>
+      {isLoading ? (
+        <div class="loader-container">
+          <div class="loader"></div>
+        </div>
+      ) : null}
       <div className="container">
-        <div className="row">
+        <div className="row mt-10">
           {recentProducts.map((product) => (
             <Link
               to={`/productdetails/${product.category.name}/${product.id}`}
