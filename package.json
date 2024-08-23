@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/MTI99/Ecommerce-App-React.git",
+  "homepage": "https://mti99.github.io/Ecommerce-App-React",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
