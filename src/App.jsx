@@ -10,6 +10,7 @@ import Cart from "./components/Cart/Cart";
 import NotFound from "./components/NotFound/NotFound";
 import { UserContextProvider } from "./Context/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import ProductDetails from "./components/ProductDetails/ProductDetails";
 
 
 
@@ -19,6 +20,7 @@ let router =  createHashRouter([
     {path:'home', element: <ProtectedRoute><Home/></ProtectedRoute>},
     {path:'about' , element:<ProtectedRoute><About/></ProtectedRoute> },
     {path:'cart' , element:<ProtectedRoute><Cart/></ProtectedRoute> },
+    {path:'productdetails/:category/:id' , element:<ProtectedRoute><ProductDetails/></ProtectedRoute> },
     {path:'regester' , element: <Regester/>},
     {path:'login' , element: <Login/>},
     {path:'*' , element: <NotFound/>},
