@@ -1,14 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import style from "./ProductDetails.module.css";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
+import { CartContext } from "../../Context/CartContext";
+import toast from "react-hot-toast";
 
 export default function ProductDetails() {
   let { id, category } = useParams();
   const [productDetails, setProductDetails] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(null);
+
+  let { addProductToCart } = useContext(CartContext);
+
+  async function addProductBridge(productId) {
+    let finalRes = await addProductToCart(productId);
+
+    if (finalRes.data.status === "success") {
+      toast.success(finalRes.data.message);
+    } else {
+      toast.error(finalRes.data.message);
+    }
+  }
 
   var settings = {
     dots: true,
@@ -67,8 +81,8 @@ export default function ProductDetails() {
   return (
     <>
       {isLoading ? (
-        <div class="loader-container">
-          <div class="loader"></div>
+        <div className="loader-container">
+          <div className="loader"></div>
         </div>
       ) : null}
       <h2 className="mx-auto text-3xl text-center my-16 font-bold border-b-2 pb-2 border-blue-500 w-fit">
@@ -82,6 +96,7 @@ export default function ProductDetails() {
                 src={imgSrc}
                 alt={productDetails?.title}
                 className="w-full h-auto rounded-lg shadow-lg"
+                key={productDetails.id}
               />
             ))}
           </Slider>
@@ -100,7 +115,9 @@ export default function ProductDetails() {
           </div>
           <div className={style.button}>
             <div className={style.buttonLayer} />
-            <button>Add To Cart</button>
+            <button onClick={() => addProductBridge(productDetails._id)}>
+              Add To Cart
+            </button>
           </div>
         </div>
       </div>
@@ -111,39 +128,43 @@ export default function ProductDetails() {
       <div className="container">
         <Slider {...settings2}>
           {relatedProducts.map((product) => (
-            <Link
-              to={`/productdetails/${product.category.name}/${product.id}`}
-              className="inner w-1/6 px-2 mb-4"
-              key={product._id}
-            >
+            <div className="inner w-1/6 px-2 mb-4" key={product._id}>
               <div className={`${style.productCard}`}>
-                <div className={style.logoCart}>
-                  <i className="bx bx-shopping-bag" />
-                </div>
-                <div className={style.mainImages}>
-                  <img src={product.imageCover} alt="Product Image" />
-                </div>
-                <div className={`${style.shoeDetails} mt-3 px-3`}>
-                  <span className={style.shoeName}>
-                    {product.title.split(" ").slice(0, 2).join(" ")}
-                  </span>
-                  <p className="text-gray-200">{product.category.name}</p>
-                  <div className="text-yellow-400 flex justify-end">
-                    <span className="text-black me-1">
-                      {product.ratingsAverage}
+                <Link
+                  to={`/productdetails/${product.category.name}/${product.id}`}
+                >
+                  <div className={style.logoCart}>
+                    <i className="bx bx-shopping-bag" />
+                  </div>
+                  <div className={style.mainImages}>
+                    <img src={product.imageCover} alt="Product Image" />
+                  </div>
+                  <div className={`${style.shoeDetails} mt-3 px-3`}>
+                    <span className={style.shoeName}>
+                      {product.title.split(" ").slice(0, 2).join(" ")}
                     </span>
-                    <i className="fa-solid fa-star flex self-center"></i>
+                    <p className="text-gray-200">{product.category.name}</p>
+                    <div className="text-yellow-400 flex justify-end">
+                      <span className="text-black me-1">
+                        {product.ratingsAverage}
+                      </span>
+                      <i className="fa-solid fa-star flex self-center"></i>
+                    </div>
+                  </div>
+                  <div className={style.price}>
+                    <span className={style.priceNum}>{product.price} EGP</span>
+                  </div>
+                </Link>
+                <div className={style.buttonContainer}>
+                  <div className={style.button}>
+                    <div className={style.buttonLayer} />
+                    <button onClick={() => addProductBridge(product._id)}>
+                      Add To Cart
+                    </button>
                   </div>
                 </div>
-                <div className={style.price}>
-                  <span className={style.priceNum}>{product.price}$</span>
-                </div>
-                <div className={style.button}>
-                  <div className={style.buttonLayer} />
-                  <button>Add To Cart</button>
-                </div>
               </div>
-            </Link>
+            </div>
           ))}
         </Slider>
       </div>

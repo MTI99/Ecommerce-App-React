@@ -39,13 +39,13 @@ export default function CategorySlider() {
         Shop Popular Categoreis
       </h2>
       {isLoading ? (
-        <div class="loader-container">
-          <div class="loader"></div>
+        <div className="loader-container">
+          <div className="loader"></div>
         </div>
       ) : null}
       <Slider {...settings}>
         {categories.map((category) => (
-          <div className="my-5 ">
+          <div className="my-5 " key={''}>
             <img
               className="w-full cat-img"
               src={category.image}
