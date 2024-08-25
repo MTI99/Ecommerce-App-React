@@ -97,14 +97,17 @@
     margin-top: -4px;
     color: #707070;
 }
-
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 .button {
+    width: 70%;
     position: relative;
     height: 50px;
-    width: 70%;
     margin: auto;
     border-radius: 25px;
-    margin-top: 30px;
     overflow: hidden;
 }
 
