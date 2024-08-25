@@ -1,14 +1,17 @@
 import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
+import { CartContext } from "../../Context/CartContext";
 
 export default function NavBar() {
-  let { userLogIn , setUserLogIn } = useContext(UserContext);
-  let navigate = useNavigate()
-  function logOut() { 
-    setUserLogIn(null)
-    localStorage.removeItem('userToken')
-    navigate('/login')
+  let { userLogIn, setUserLogIn } = useContext(UserContext);
+  let { cartCount } = useContext(CartContext);
+
+  let navigate = useNavigate();
+  function logOut() {
+    setUserLogIn(null);
+    localStorage.removeItem("userToken");
+    navigate("/login");
   }
   return (
     <>
@@ -27,63 +30,72 @@ export default function NavBar() {
               Fresh Cart
             </span>
           </a>
-{/* Navbar content */}
-<div className={`flex justify-between ${userLogIn ? 'flex-grow' : ''}`}>
-  {/* Middle Links */}
-  {userLogIn ? (
-    <div className="m-auto flex ">
-      <ul className="hidden md:flex space-x-8 justify-center flex-grow">
-        <NavLink
-          to="/home"
-          className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/about"
-          className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-        >
-          About
-        </NavLink>
-        <NavLink
-          to="/cart"
-          className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-        >
-          Cart
-        </NavLink>
-      </ul>
-    </div>
-  ) : null}
+          {/* Navbar content */}
+          <div
+            className={`flex justify-between ${userLogIn ? "flex-grow" : ""}`}
+          >
+            {/* Middle Links */}
+            {userLogIn ? (
+              <div className="m-auto flex ">
+                <ul className="hidden md:flex space-x-8 justify-center flex-grow">
+                  <NavLink
+                    to="/home"
+                    className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Home
+                  </NavLink>
+                  <NavLink
+                    to="/about"
+                    className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    About
+                  </NavLink>
+                  <NavLink
+                    to="/cart"
+                    className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Cart
+                  </NavLink>
+                </ul>
+              </div>
+            ) : null}
 
-  {/* Right Links */}
-  <div className="flex items-center space-x-4">
-    {userLogIn ? (
-      <ul className="hidden md:flex space-x-8">
-        <div
-          className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer"
-          onClick={() => logOut()}>
-          LogOut
-        </div>
-      </ul>
-    ) : (
-      <ul className="hidden md:flex space-x-8">
-      <NavLink
-        to="/regester"
-        className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-      >
-        Register
-      </NavLink>
-      <NavLink
-        to="/login"
-        className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-      >
-        Login
-      </NavLink>
-    </ul>
-    )}
-  </div>
-</div>
-
+            {/* Right Links */}
+            <div className="flex items-center space-x-4">
+              {userLogIn ? (
+                <ul className="hidden md:flex space-x-8">
+                  <Link to={"/cart"} className="relative inline-block">
+                    {/* Icon */}
+                    <i className="fas fa-shopping-cart text-3xl text-white"></i>
+                    <span className="absolute top-[-8px] right-[-8px] rounded-full bg-blue-500 text-white text-xs font-bold p-1">
+                      {cartCount.numOfCartItems}
+                    </span>
+                  </Link>
+                  <div
+                    className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer"
+                    onClick={() => logOut()}
+                  >
+                    LogOut
+                  </div>
+                </ul>
+              ) : (
+                <ul className="hidden md:flex space-x-8">
+                  <NavLink
+                    to="/regester"
+                    className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Register
+                  </NavLink>
+                  <NavLink
+                    to="/login"
+                    className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Login
+                  </NavLink>
+                </ul>
+              )}
+            </div>
+          </div>
 
           {/* Dropdown for small screens */}
           <button
@@ -146,7 +158,6 @@ export default function NavBar() {
               <NavLink
                 to="/login"
                 className="block py-2 px-3 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:border-gray-700"
-
               >
                 Login
               </NavLink>

@@ -1,12 +1,15 @@
 import axios from "axios";
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
+
 
 export let CartContext = createContext();
 
-export default function CartContextProvider(props) {
+export function CartContextProvider(props) {
+const [cartCount, setCartCount] = useState(0)
 let headers = {
 token: localStorage.getItem("userToken"),
 };
+
     function getLoggedUserCart() {
         return axios
         .get("https://ecommerce.routemisr.com/api/v1/cart", {
@@ -29,8 +32,6 @@ token: localStorage.getItem("userToken"),
         .catch((error) => error);
     }
 
-
-
     function updateProductCount(productId , count) {
         return axios
         .put(`https://ecommerce.routemisr.com/api/v1/cart/${productId}`, {
@@ -43,7 +44,6 @@ token: localStorage.getItem("userToken"),
         .then((response) => response)
         .catch((error) => error);
     }
-
 
     function deleteProductCart(productId) {
         return axios
@@ -64,15 +64,33 @@ token: localStorage.getItem("userToken"),
         .catch((error) => error);
     }
 
+    function checkOut(cartId , url , formVlaues ) {
+        return axios
+        .post(` https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${url} `, {
+            shippingAddress:formVlaues ,
+        },
+        {
+            headers
+        }
+        )
+        .then((response) => response)
+        .catch((error) => error);
+    }
+
+    async function getCartData() { 
+        let res = getLoggedUserCart()
+        setCartCount(res)
+    }
 
 
 
-
-
+    useEffect(() => {
+        getCartData()
+    }, [])
 
 
     return (
-        <CartContext.Provider value={{ getLoggedUserCart , addProductToCart , updateProductCount , deleteProductCart , clearCart }}>
+        <CartContext.Provider value={{ getLoggedUserCart , addProductToCart , updateProductCount , deleteProductCart , clearCart , checkOut , cartCount , setCartCount }}>
         {props.children}
         </CartContext.Provider>
     );

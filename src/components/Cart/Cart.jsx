@@ -1,28 +1,36 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../Context/CartContext";
+import style from "./Cart.module.css";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
-  let { getLoggedUserCart, updateProductCount, deleteProductCart , clearCart } =
+  let { getLoggedUserCart, updateProductCount, deleteProductCart, clearCart , setCartCount } =
     useContext(CartContext);
   const [cartDetails, setCartDetails] = useState(null);
 
   async function getCartBridge() {
     let res = await getLoggedUserCart();
     setCartDetails(res.data.data);
+
+
   }
 
   async function updateCountBridge(productId, count) {
     let res = await updateProductCount(productId, count);
     setCartDetails(res.data.data);
+
   }
 
   async function deleteProductBridge(productId) {
     let res = await deleteProductCart(productId);
     setCartDetails(res.data.data);
+    setCartCount(res.data)
   }
   async function clearCartBridge() {
     let res = await clearCart();
     setCartDetails(res.data.data);
+    setCartCount(res.data)
+
   }
 
   useEffect(() => {
@@ -35,7 +43,7 @@ export default function Cart() {
         Cart Items
       </h2>
 
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg container">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg container ">
         <div className="flex justify-between">
           <span className="font-semibold text-2xl block my-3">
             Total Cart Price : {cartDetails?.totalCartPrice} EGP
@@ -161,6 +169,17 @@ export default function Cart() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="my-10 w-96 m-auto">
+        <Link to={'/checkout'}>
+          <div className={`${style.button}`}>
+            <div className={style.buttonLayer} />
+            <button onClick={() => addProductBridge(product._id)}>
+              Checkout Now
+            </button>
+          </div>
+        </Link>
       </div>
     </>
   );

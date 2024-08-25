@@ -26,6 +26,8 @@ export default function RecentProducts() {
   //   getRecentPro();
   // }, []);
 
+
+
   function getRecentProduct() {
     return axios.get("https://ecommerce.routemisr.com/api/v1/products");
   }
@@ -41,13 +43,21 @@ export default function RecentProducts() {
     // refetchInterval:3000, // refetch every 3s
   });
 
-  let { addProductToCart } = useContext(CartContext);
+  let { addProductToCart , cartCount , setCartCount} = useContext(CartContext);
+
+
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
+    
 
     if (finalRes.data.status === "success") {
-      toast.success(finalRes.data.message);
+      setCartCount(finalRes.data)
+      console.log(cartCount);
+      toast.success(finalRes.data.message , { 
+        duration:1000,
+        position:"top-right"
+      } );
     } else {
       toast.error(finalRes.data.message);
     }
@@ -92,6 +102,7 @@ export default function RecentProducts() {
                     <span className={style.shoeName}>
                       {product.title.split(" ").slice(0, 2).join(" ")}
                     </span>
+                    <div className="flex justify-between">
                     <p className="text-gray-200">{product.category.name}</p>
                     <div className="text-yellow-400 flex justify-end">
                       <span className="text-black me-1">
@@ -99,19 +110,19 @@ export default function RecentProducts() {
                       </span>
                       <i className="fa-solid fa-star flex self-center"></i>
                     </div>
+                    </div>
+
                   </div>
                   <div className={style.price}>
                     <span className={style.priceNum}>{product.price} EGP</span>
                   </div>
                 </Link>
-                <div className={style.buttonContainer}>
-                  <div className={style.button}>
-                    <div className={style.buttonLayer} />
-                    <button onClick={() => addProductBridge(product._id)}>
-                      Add To Cart
-                    </button>
-                  </div>
-                </div>
+          <div className={style.button}>
+            <div className={style.buttonLayer} />
+            <button onClick={() => addProductBridge(product._id)}>
+              Add To Cart
+            </button>
+          </div>
               </div>
             </div>
           ))}
