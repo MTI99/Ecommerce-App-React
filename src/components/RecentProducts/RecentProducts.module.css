@@ -54,8 +54,8 @@
 }
 
 .shoeDetails .shoeName {
-    font-size: 22px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 700;
     color: #161616;
     margin-top: 15px;
 }
@@ -102,12 +102,13 @@
     justify-content: center;
     margin-top: 20px;
   }
-.button {
-    width: 70%;
+  .button {
     position: relative;
     height: 50px;
+    width: 70%;
     margin: auto;
     border-radius: 25px;
+    margin-top: 30px;
     overflow: hidden;
 }
 
@@ -132,9 +133,8 @@
     background: none;
     outline: none;
     border: none;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 1px;
     color: #fff;
 }
-

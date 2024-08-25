@@ -18,7 +18,10 @@ export default function ProductDetails() {
     let finalRes = await addProductToCart(productId);
 
     if (finalRes.data.status === "success") {
-      toast.success(finalRes.data.message);
+      toast.success(finalRes.data.message , { 
+        duration:1000,
+        position:"top-right"
+      });
     } else {
       toast.error(finalRes.data.message);
     }

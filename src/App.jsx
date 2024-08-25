@@ -17,8 +17,10 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import CartContextProvider from "./Context/CartContext";
+import { CartContextProvider } from "./Context/CartContext";
 import { Toaster } from "react-hot-toast";
+import Checkout from "./components/Checkout/Checkout";
+import Orders from "./components/Orders/Orders";
 const queryClient = new QueryClient();
 
 let router = createHashRouter([
@@ -63,6 +65,22 @@ let router = createHashRouter([
         element: (
           <ProtectedRoute>
             <ProductDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "checkout",
+        element: (
+          <ProtectedRoute>
+            <Checkout/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "allorders",
+        element: (
+          <ProtectedRoute>
+            <Orders/>
           </ProtectedRoute>
         ),
       },
