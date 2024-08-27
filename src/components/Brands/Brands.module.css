@@ -1,0 +1,166 @@
+/* Google Fonts Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+
+.productCard {
+    position: relative;
+    border-radius: 15px;
+    padding: 0px 0px 20px;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+    overflow: hidden;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+
+.logoCart {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logoCart img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+}
+
+.logoCart i {
+    font-size: 27px;
+    color: #707070;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.logoCart i:hover {
+    color: #333;
+}
+
+.mainImages {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainImages img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+}
+
+.shoeDetails .shoeName {
+    font-size: 18px;
+    font-weight: 700;
+    color: #161616;
+    margin-top: 15px;
+}
+
+.shoeDetails p {
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    text-align: justify;
+    font-size: 14px;
+}
+
+.shoeDetails .stars {
+    margin-top: 10px;
+}
+
+.shoeDetails .stars i {
+    margin: 0 -1px;
+    color: #333;
+}
+
+.price {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.price .priceNum {
+    font-size: 25px;
+    font-weight: 600;
+    color: #707070;
+}
+
+.price .priceLetter {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: -4px;
+    color: #707070;
+}
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .button {
+    position: relative;
+    height: 50px;
+    width: 70%;
+    margin: auto;
+    border-radius: 25px;
+    margin-top: 30px;
+    overflow: hidden;
+}
+
+.buttonLayer {
+    position: absolute;
+    height: 100%;
+    width: 300%;
+    left: -100%;
+    background-image: linear-gradient(135deg, #9708cc, #43cbff, #9708cc, #43cbff);
+    transition: all 0.4s ease;
+    border-radius: 25px;
+}
+
+.button:hover .buttonLayer {
+    left: 0;
+}
+
+.button button {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background: none;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    position: relative;
+    background-color: transparent;
+    padding: 20px;
+  }
+  
+  .modalImage {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+    border-radius: 10px;
+  }

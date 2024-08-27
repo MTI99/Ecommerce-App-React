@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
 
 export default function Checkout() {
-  let { checkOut } = useContext(CartContext);
+  let { checkOut , cartCount } = useContext(CartContext);
+  console.log(cartCount.cartId );
   let formik = useFormik({
     initialValues: {
       details: "",
@@ -12,9 +13,9 @@ export default function Checkout() {
       city: "",
     },
     onSubmit: () =>
-      handleCheckOut("66cb7d71aacea3b68dd9869f", "http://localhost:5173"),
+      handleCheckOut(cartCount.cartId , "http://localhost:5173"),
   });
-
+  
   async function handleCheckOut(cartId, url) {
     let { data } = await checkOut(cartId, url, formik.values);
     if (data.status == "success") {
