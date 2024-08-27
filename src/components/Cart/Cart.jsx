@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../Context/CartContext";
 import style from "./Cart.module.css";
 import { Link } from "react-router-dom";
-// import backgroundImage from './assets/images/emptyCart.png';
 
 export default function Cart() {
   let {
@@ -12,45 +11,63 @@ export default function Cart() {
     clearCart,
     setCartCount,
     cartCount,
+    getCartData
   } = useContext(CartContext);
+
   const [cartDetails, setCartDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function getCartBridge() {
     let res = await getLoggedUserCart();
     setCartDetails(res.data.data);
+    setCartCount(res.data.numOfCartItems)
+    setIsLoading(false);
   }
 
   async function updateCountBridge(productId, count) {
+    setIsLoading(true); // Show loader while updating
     let res = await updateProductCount(productId, count);
     setCartDetails(res.data.data);
+    setIsLoading(false);
   }
 
   async function deleteProductBridge(productId) {
+    setIsLoading(true); // Show loader while deleting
     let res = await deleteProductCart(productId);
     setCartDetails(res.data.data);
-    setCartCount(res.data);
+    setCartCount(res.data.numOfCartItems);
+    setIsLoading(false);
   }
+
   async function clearCartBridge() {
+    setIsLoading(true); // Show loader while clearing cart
     let res = await clearCart();
     setCartDetails(res.data.data);
-    setCartCount(res.data);
+    setCartCount(res.data.numOfCartItems);
+    setIsLoading(false);
   }
 
   useEffect(() => {
     getCartBridge();
-    console.log(cartCount);
+    getCartData()
   }, []);
 
   return (
     <>
+      {isLoading ? (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      ) : null}
+
       <h2 className="mx-auto text-3xl text-center my-10 font-bold border-b-2 pb-2 border-blue-500 w-fit">
         Cart Items
       </h2>
-      {!cartCount.numOfCartItems ? (
-        <div className="flex flex-col items-center justify-center h-screen  container">
-          <div className="rounded-lg flex flex-col items-center w-full h-full ">
-            <div className="img-cover h-3/4 w-full"></div>
 
+      {!cartCount ? (
+        <div className="flex flex-col items-center justify-center h-screen container">
+          <div className="rounded-lg flex flex-col items-center w-full h-full">
+            <div className="img-cover h-3/4 w-full"></div>
             <p className="text-3xl font-semibold text-gray-800 mb-2">
               Oops! Your cart is empty!
             </p>
@@ -66,7 +83,7 @@ export default function Cart() {
           </div>
         </div>
       ) : (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg container ">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg container">
           <div className="flex justify-between">
             <span className="font-semibold text-2xl block my-3 ms-5">
               Total Cart Price : {cartDetails?.totalCartPrice} EGP
@@ -79,7 +96,7 @@ export default function Cart() {
             </button>
           </div>
 
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th scope="col" className="px-16 py-3">
@@ -113,7 +130,7 @@ export default function Cart() {
                       alt={product.product.title}
                     />
                   </td>
-                  <td className="px-6 py-4 font-semibold text-gray-900 ">
+                  <td className="px-6 py-4 font-semibold text-gray-900">
                     {product.product.title}
                   </td>
                   <td className="px-6 py-4">
@@ -150,7 +167,7 @@ export default function Cart() {
                         <span> {product.count} </span>
                       </div>
                       <button
-                        className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 "
+                        className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
                         type="button"
                         onClick={() =>
                           updateCountBridge(
@@ -178,7 +195,7 @@ export default function Cart() {
                       </button>
                     </div>
                   </td>
-                  <td className="px-6 py-4 font-semibold text-gray-900 ">
+                  <td className="px-6 py-4 font-semibold text-gray-900">
                     {product.price} EGP
                   </td>
                   <td className="px-6 py-4">

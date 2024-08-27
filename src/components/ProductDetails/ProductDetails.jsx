@@ -12,16 +12,16 @@ export default function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(null);
 
-  let { addProductToCart , setCartCount } = useContext(CartContext);
+  let { addProductToCart, setCartCount } = useContext(CartContext);
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
 
     if (finalRes.data.status === "success") {
-      setCartCount(finalRes.data)
-      toast.success(finalRes.data.message , { 
-        duration:1000,
-        position:"top-right"
+      setCartCount(finalRes.data.numOfCartItems);
+      toast.success(finalRes.data.message, {
+        duration: 1000,
+        position: "top-right",
       });
     } else {
       toast.error(finalRes.data.message);
@@ -51,6 +51,7 @@ export default function ProductDetails() {
       .get(`https://ecommerce.routemisr.com/api/v1/products/${id}`)
       .then(({ data }) => {
         setProductDetails(data.data);
+
         setIsLoading(false);
       })
       .catch((error) => {

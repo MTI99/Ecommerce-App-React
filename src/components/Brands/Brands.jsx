@@ -35,7 +35,6 @@ export default function Brands() {
     // refetchInterval:3000, // refetch every 3s
   });
 
-  console.log(data);
 
   if (isLoading) {
     return (

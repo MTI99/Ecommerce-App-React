@@ -17,7 +17,7 @@ export default function MainSlider() {
   };
 
   return <>
-  <div className="flex flex-wrap align-middle mb-10">
+  <div className="flex flex-wrap align-middle my-10">
   <div className="w-3/4">
   <Slider {...settings}>
   <img className='w-full h-[400px]' src={slider2} alt='sliderImage1' />

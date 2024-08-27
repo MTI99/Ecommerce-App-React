@@ -6,7 +6,7 @@ import { CartContext } from "../../Context/CartContext";
 export default function NavBar() {
   let { userLogIn, setUserLogIn } = useContext(UserContext);
   let { cartCount } = useContext(CartContext);
-
+console.log(cartCount);
   let navigate = useNavigate();
   function logOut() {
     setUserLogIn(null);
@@ -73,9 +73,10 @@ export default function NavBar() {
                   <Link to={"/cart"} className="relative inline-block">
                     {/* Icon */}
                     <i className="fas fa-shopping-cart text-3xl text-white"></i>
-                    <span className="absolute top-[-8px] right-[-8px] rounded-full bg-blue-500 text-white text-xs font-bold p-1">
-                      {cartCount.numOfCartItems}
-                    </span>
+                    <div className="absolute top-[-8px] right-[-8px] rounded-full bg-blue-500 text-white text-xs font-bold p-1">
+                      
+                      {cartCount}
+                    </div>
                   </Link>
                   <div
                     className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer"

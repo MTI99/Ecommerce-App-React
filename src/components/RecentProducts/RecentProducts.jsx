@@ -52,8 +52,7 @@ export default function RecentProducts() {
     
 
     if (finalRes.data.status === "success") {
-      setCartCount(finalRes.data)
-      console.log(cartCount);
+      setCartCount(finalRes.data.numOfCartItems)
       toast.success(finalRes.data.message , { 
         duration:1000,
         position:"top-right"
