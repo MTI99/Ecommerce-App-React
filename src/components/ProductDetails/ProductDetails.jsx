@@ -12,12 +12,13 @@ export default function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(null);
 
-  let { addProductToCart } = useContext(CartContext);
+  let { addProductToCart , setCartCount } = useContext(CartContext);
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
 
     if (finalRes.data.status === "success") {
+      setCartCount(finalRes.data)
       toast.success(finalRes.data.message , { 
         duration:1000,
         position:"top-right"

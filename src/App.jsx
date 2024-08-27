@@ -21,9 +21,12 @@ import { CartContextProvider } from "./Context/CartContext";
 import { Toaster } from "react-hot-toast";
 import Checkout from "./components/Checkout/Checkout";
 import Orders from "./components/Orders/Orders";
+import Brands from "./components/Brands/Brands";
+import Categories from "./components/Categories/Categories";
+// import BrandDetails from "./components/BrandDetails/BrandDetails";
 const queryClient = new QueryClient();
 
-let router = createHashRouter([
+let router = createBrowserRouter([
   {
     path: "",
     element: <LayOut />,
@@ -45,10 +48,10 @@ let router = createHashRouter([
         ),
       },
       {
-        path: "about",
+        path: "brands",
         element: (
           <ProtectedRoute>
-            <About />
+            <Brands/>
           </ProtectedRoute>
         ),
       },
@@ -68,6 +71,14 @@ let router = createHashRouter([
           </ProtectedRoute>
         ),
       },
+      // {
+      //   path: "brands/:id",
+      //   element: (
+      //     <ProtectedRoute>
+      //       <BrandDetails/>
+      //     </ProtectedRoute>
+      //   ),
+      // },
       {
         path: "checkout",
         element: (
@@ -84,7 +95,15 @@ let router = createHashRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "regester", element: <Regester /> },
+      {
+        path: "categories",
+        element: (
+          <ProtectedRoute>
+            <Categories/>
+          </ProtectedRoute>
+        ),
+      },
+        { path: "regester", element: <Regester /> },
       { path: "login", element: <Login /> },
       { path: "*", element: <NotFound /> },
     ],
