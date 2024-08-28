@@ -93,7 +93,7 @@ token: localStorage.getItem("userToken"),
 
 
     return (
-        <CartContext.Provider value={{ getLoggedUserCart , addProductToCart , updateProductCount , deleteProductCart , clearCart , checkOut , cartCount , setCartCount , getCartData }}>
+        <CartContext.Provider value={{ getLoggedUserCart , addProductToCart , updateProductCount , deleteProductCart , clearCart , checkOut , cartCount , setCartCount , getCartData ,headers }}>
         {props.children}
         </CartContext.Provider>
     );

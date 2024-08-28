@@ -1,12 +1,128 @@
-import React, { useEffect, useState } from 'react'
-import style from './WishList.module.css'
-export default function WishList() {
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { WishlistContext } from "../../Context/WishListContext";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import style from "./WishList.module.css";
+import { CartContext } from "../../Context/CartContext";
+import toast, { Toaster } from "react-hot-toast";
 
-    const [counter, setCounter] = useState(0)
+
+
+export default function Wishlist() {
+  const { wishlist, addToWishlist, removeFromWishlist , getLoggedWishList } =
+  useContext(WishlistContext);
+  const { addProductToCart , setCartCount } = useContext(CartContext)
+
+
     
-  return (
-    <div>
-        WishList    
+function getWishlist() {
+    return getLoggedWishList();
+    
+  }
+  let { data, isError, error, isLoading } = useQuery({
+    queryKey: ["wishlistProducts" ],
+    queryFn:   getWishlist,
+    select: (data) => data.data.data,
+  });
+
+  async function addProductBridge(productId) {
+    let finalRes = await addProductToCart(productId);
+
+    if (finalRes.data.status === "success") {
+      setCartCount(finalRes.data.numOfCartItems);
+      toast.success(finalRes.data.message, {
+        duration: 1000,
+        position: "top-right",
+      });
+    } else {
+      toast.error(finalRes.data.message);
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      </>
+    );
+  }
+  if (isError) {
+    return (
+      <>
+        <div className="w-full h-full bg-gray-400 text-center">
+          <p>{error.message}</p>
+        </div>
+      </>
+    );
+  }
+
+
+
+
+  return <>
+    <div className="container">
+      <h2>Your Wishlist</h2>
+      <div className="row mt-10">
+        {wishlist.length === 0 ? (
+          <p>Your wishlist is empty.</p>
+        ) : (
+          wishlist.map((product) => (
+<div className="inner w-1/6 px-2 mb-4" key={product._id}>
+<div className={`${style.productCard}`}>
+  <Link
+    to={`/productdetails/${product.category.name}/${product.id}`}
+  >
+    <div className={style.logoCart}>
+      <i className="bx bx-shopping-bag" />
     </div>
-  )
+    <div className={style.mainImages}>
+      <img src={product.imageCover} alt="Product Image" />
+    </div>
+    <div className={`${style.shoeDetails} mt-3 px-3`}>
+      <span className={style.shoeName}>
+        {product.title.split(" ").slice(0, 2).join(" ")}
+      </span>
+      <div className="flex justify-between">
+        <p className="text-gray-200">{product.category.name}</p>
+        <div className="text-yellow-400 flex justify-end">
+          <span className="text-black me-1">
+            {product.ratingsAverage}
+          </span>
+          <i className="fa-solid fa-star flex self-center"></i>
+        </div>
+      </div>
+    </div>
+    <div className={style.price}>
+      <span className={style.priceNum}>{product.price} EGP</span>
+    </div>
+  </Link>
+  <button
+    onClick={() => removeFromWishlist(product._id)}
+    className=" px-2 py-3 m-auto flex justify-between"
+  >
+    <i className="fa-solid fa-heart self-center pe-2 text-red-500"></i>
+    <span className="text-sm">Remove From Wishlist</span>
+  </button>
+
+
+  <div className={style.button}>
+    <div className={style.buttonLayer} />
+    <button onClick={() => addProductBridge(product._id)}>
+      Add To Cart
+    </button>
+  </div>
+</div>
+</div>
+          ))
+        )}
+      </div>
+    </div>
+
+
+
+
+</>
+  
 }
