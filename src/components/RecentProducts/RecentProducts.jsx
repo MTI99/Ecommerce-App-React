@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CartContext } from "../../Context/CartContext";
 import toast from "react-hot-toast";
+import Pagenation from "../Pagenation/Pagenation";
 export default function RecentProducts() {
   // const [recentProducts, setRecentProducts] = useState([]);
   // const [isLoading, setIsLoading] = useState(null);
@@ -25,16 +26,18 @@ export default function RecentProducts() {
   //   setIsLoading(true);
   //   getRecentPro();
   // }, []);
+  
+  const [currentPage, setCurrentPage] = useState(1);
 
-
-
-  function getRecentProduct() {
-    return axios.get("https://ecommerce.routemisr.com/api/v1/products");
+  function getRecentProduct(pageNum) {
+    return axios.get(
+      `https://ecommerce.routemisr.com/api/v1/products?page=${pageNum}`
+    );
   }
 
   let { data, isError, error, isLoading } = useQuery({
-    queryKey: ["recentProducts"],
-    queryFn: getRecentProduct,
+    queryKey: ["recentProducts", currentPage ],
+    queryFn: ()=>  getRecentProduct(currentPage),
     select: (data) => data.data.data,
     // staleTime:2000,
     // refetchIntervalInBackground:false,
@@ -43,24 +46,29 @@ export default function RecentProducts() {
     // refetchInterval:3000, // refetch every 3s
   });
 
-  let { addProductToCart , cartCount , setCartCount} = useContext(CartContext);
-
-
+  let { addProductToCart, cartCount, setCartCount } = useContext(CartContext);
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
-    
 
     if (finalRes.data.status === "success") {
-      setCartCount(finalRes.data.numOfCartItems)
-      toast.success(finalRes.data.message , { 
-        duration:1000,
-        position:"top-right"
-      } );
+      setCartCount(finalRes.data.numOfCartItems);
+      toast.success(finalRes.data.message, {
+        duration: 1000,
+        position: "top-right",
+      });
     } else {
       toast.error(finalRes.data.message);
     }
   }
+
+function handlePageChange({selected}) {
+  setCurrentPage(selected+1)
+  // console.log(metadata);
+  
+}
+
+
 
   if (isLoading) {
     return (
@@ -102,29 +110,30 @@ export default function RecentProducts() {
                       {product.title.split(" ").slice(0, 2).join(" ")}
                     </span>
                     <div className="flex justify-between">
-                    <p className="text-gray-200">{product.category.name}</p>
-                    <div className="text-yellow-400 flex justify-end">
-                      <span className="text-black me-1">
-                        {product.ratingsAverage}
-                      </span>
-                      <i className="fa-solid fa-star flex self-center"></i>
+                      <p className="text-gray-200">{product.category.name}</p>
+                      <div className="text-yellow-400 flex justify-end">
+                        <span className="text-black me-1">
+                          {product.ratingsAverage}
+                        </span>
+                        <i className="fa-solid fa-star flex self-center"></i>
+                      </div>
                     </div>
-                    </div>
-
                   </div>
                   <div className={style.price}>
                     <span className={style.priceNum}>{product.price} EGP</span>
                   </div>
                 </Link>
-          <div className={style.button}>
-            <div className={style.buttonLayer} />
-            <button onClick={() => addProductBridge(product._id)}>
-              Add To Cart
-            </button>
-          </div>
+                <div className={style.button}>
+                  <div className={style.buttonLayer} />
+                  <button onClick={() => addProductBridge(product._id)}>
+                    Add To Cart
+                  </button>
+                </div>
               </div>
             </div>
           ))}
+
+          <Pagenation  handlePageChange={handlePageChange} pageCount={2} />
         </div>
       </div>
     </>
