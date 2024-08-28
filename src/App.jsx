@@ -23,6 +23,8 @@ import Checkout from "./components/Checkout/Checkout";
 import Orders from "./components/Orders/Orders";
 import Brands from "./components/Brands/Brands";
 import Categories from "./components/Categories/Categories";
+import { WishlistProvider } from "./Context/WishListContext";
+import WishList from "./components/WishList/WishList";
 // import BrandDetails from "./components/BrandDetails/BrandDetails";
 const queryClient = new QueryClient();
 
@@ -71,14 +73,14 @@ let router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      // {
-      //   path: "brands/:id",
-      //   element: (
-      //     <ProtectedRoute>
-      //       <BrandDetails/>
-      //     </ProtectedRoute>
-      //   ),
-      // },
+      {
+        path: "wishlist",
+        element: (
+          <ProtectedRoute>
+            <WishList/>
+          </ProtectedRoute>
+        ),
+      },
       {
         path: "checkout",
         element: (
@@ -113,11 +115,14 @@ let router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+
       <UserContextProvider>
         <CartContextProvider>
+        <WishlistProvider>
         <RouterProvider router={router}></RouterProvider>
         <Toaster/>
         <ReactQueryDevtools/>
+        </WishlistProvider>
         </CartContextProvider>
       </UserContextProvider>
     </QueryClientProvider>

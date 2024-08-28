@@ -2,31 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import style from "./RecentProducts.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { CartContext } from "../../Context/CartContext";
 import toast from "react-hot-toast";
 import Pagenation from "../Pagenation/Pagenation";
-export default function RecentProducts() {
-  // const [recentProducts, setRecentProducts] = useState([]);
-  // const [isLoading, setIsLoading] = useState(null);
-  // function getRecentPro() {
-  //   axios
-  //     .get("https://ecommerce.routemisr.com/api/v1/products")
-  //     .then(({ data }) => {
-  //       setRecentProducts(data.data);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setIsLoading(false);
-  //     });
-  // }
+import { WishlistContext } from "../../Context/WishListContext";
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   getRecentPro();
-  // }, []);
-  
+export default function RecentProducts() {
   const [currentPage, setCurrentPage] = useState(1);
 
   function getRecentProduct(pageNum) {
@@ -36,17 +18,31 @@ export default function RecentProducts() {
   }
 
   let { data, isError, error, isLoading } = useQuery({
-    queryKey: ["recentProducts", currentPage ],
-    queryFn: ()=>  getRecentProduct(currentPage),
+    queryKey: ["recentProducts", currentPage],
+    queryFn: () => getRecentProduct(currentPage),
     select: (data) => data.data.data,
-    // staleTime:2000,
-    // refetchIntervalInBackground:false,
-    // retry:6 , //Retry in error by defult 3 time
-    // retryDelay: 5000,
-    // refetchInterval:3000, // refetch every 3s
   });
 
-  let { addProductToCart, cartCount, setCartCount } = useContext(CartContext);
+
+  let { addProductToCart, setCartCount } = useContext(CartContext);
+  const { wishlist, addToWishlist, removeFromWishlist , getWishData } =
+    useContext(WishlistContext);
+
+
+
+
+    
+  const [isInWishlist, setIsInWishlist] = useState({}); 
+  useEffect(() => {
+    const updatedIsInWishlist = {};
+    wishlist?.forEach((product) => {
+      updatedIsInWishlist[product._id] = true;
+    });
+    setIsInWishlist(updatedIsInWishlist);
+  }, [wishlist, data]);
+
+
+
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
@@ -62,13 +58,25 @@ export default function RecentProducts() {
     }
   }
 
-function handlePageChange({selected}) {
-  setCurrentPage(selected+1)
-  // console.log(metadata);
-  
-}
+  function handlePageChange({ selected }) {
+    setCurrentPage(selected + 1);
+  }
 
-
+  function handleWishlistToggle(product) {
+    if (isInWishlist[product._id]) {
+      removeFromWishlist(product._id);
+      setIsInWishlist((prevState) => ({
+        ...prevState,
+        [product._id]: false,
+      }));
+    } else {
+      addToWishlist(product);
+      setIsInWishlist((prevState) => ({
+        ...prevState,
+        [product._id]: true,
+      }));
+    }
+  }
 
   if (isLoading) {
     return (
@@ -79,6 +87,7 @@ function handlePageChange({selected}) {
       </>
     );
   }
+
   if (isError) {
     return (
       <>
@@ -123,6 +132,21 @@ function handlePageChange({selected}) {
                     <span className={style.priceNum}>{product.price} EGP</span>
                   </div>
                 </Link>
+                <button
+                  onClick={() => handleWishlistToggle(product)}
+                  className=" px-2 py-5 m-auto flex justify-between"
+                >
+                  <i
+                    className="fa-solid fa-heart self-center pe-2"
+                    style={{
+                      color: isInWishlist[product._id] ? "red" : "black",
+                    }}
+                  ></i>
+                  <span className="text-sm">
+                    {isInWishlist[product._id] ? "Remove From Wishlist" : "Add to Wishlist"}
+                  </span>
+                </button>
+                
                 <div className={style.button}>
                   <div className={style.buttonLayer} />
                   <button onClick={() => addProductBridge(product._id)}>
@@ -133,7 +157,7 @@ function handlePageChange({selected}) {
             </div>
           ))}
 
-          <Pagenation  handlePageChange={handlePageChange} pageCount={2} />
+          <Pagenation handlePageChange={handlePageChange} pageCount={2} />
         </div>
       </div>
     </>
