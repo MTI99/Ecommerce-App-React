@@ -34,7 +34,6 @@ export default function Categories() {
 
   });
 
-  console.log(data);
 
   if (isLoading) {
     return (

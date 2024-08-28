@@ -6,7 +6,6 @@ import { CartContext } from "../../Context/CartContext";
 export default function NavBar() {
   let { userLogIn, setUserLogIn } = useContext(UserContext);
   let { cartCount } = useContext(CartContext);
-console.log(cartCount);
   let navigate = useNavigate();
   function logOut() {
     setUserLogIn(null);
