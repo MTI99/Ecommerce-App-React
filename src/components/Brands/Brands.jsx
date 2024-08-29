@@ -28,11 +28,6 @@ export default function Brands() {
     queryKey: ["brends"],
     queryFn: getBrands,
     select: (data) => data.data.data,
-    // staleTime:2000,
-    // refetchIntervalInBackground:false,
-    // retry:6 , //Retry in error by defult 3 time
-    // retryDelay: 5000,
-    // refetchInterval:3000, // refetch every 3s
   });
 
 

@@ -1,0 +1,54 @@
+.footer-container {
+    background-color: #f1f3f6;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .app-download-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .app-download-section p {
+    margin-bottom: 20px;
+  }
+  
+  .email-input-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .email-input-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+  }
+  
+  .share-link-button {
+    background-color: #007bff; /* اللون الأزرق */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .share-link-button:hover {
+    background-color: #0056b3; /* لون أزرق أغمق عند التمرير */
+  }
+  
+  .footer-bottom-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .payment-partners img, .app-download-buttons img {
+    margin: 0 10px;
+    height: 30px;
+  }
+  

@@ -28,7 +28,7 @@ import WishList from "./components/WishList/WishList";
 // import BrandDetails from "./components/BrandDetails/BrandDetails";
 const queryClient = new QueryClient();
 
-let router = createBrowserRouter([
+let router = createHashRouter([
   {
     path: "",
     element: <LayOut />,
