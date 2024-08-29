@@ -5,7 +5,9 @@ import { createContext, useEffect, useState } from "react";
 export let CartContext = createContext();
 
 export function CartContextProvider(props) {
-const [cartCount, setCartCount] = useState(null)
+    const [cartCount, setCartCount] = useState(null)
+    const [cartID, setcartID] = useState(null)
+    
 const [ isLoading , setIsLoading ] = useState(null)
 
 
@@ -83,17 +85,18 @@ token: localStorage.getItem("userToken"),
     async function getCartData() { 
         let res = await getLoggedUserCart()
         setCartCount(res?.data.numOfCartItems)
+        setcartID(res?.data.cartId)
     }
 
 
 
     useEffect(() => {
-        getCartData()
+      headers.token &&  getCartData()
     }, [])
 
 
     return (
-        <CartContext.Provider value={{ getLoggedUserCart , addProductToCart , updateProductCount , deleteProductCart , clearCart , checkOut , cartCount , setCartCount , getCartData ,headers }}>
+        <CartContext.Provider value={{ getLoggedUserCart , addProductToCart , updateProductCount , deleteProductCart , clearCart , checkOut , cartCount , setCartCount , getCartData ,headers , cartID }}>
         {props.children}
         </CartContext.Provider>
     );

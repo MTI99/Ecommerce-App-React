@@ -29,26 +29,12 @@ export function WishlistProvider({ children }) {
   }
   async function getWishData() {
     let res = await getLoggedWishList();
-    setWishlist(res.data.data);
+    setWishlist(res?.data.data);
   }
 
-  async function loadWishlistData() {
-    const savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
-
-    let res = await getLoggedWishList();
-
-    if (savedWishlist) {
-      setWishlist(savedWishlist);
-    }
-
-    if (res.data && res.data.data) {
-      setWishlist(res.data.data);
-      localStorage.setItem("wishlist", JSON.stringify(res.data.data));
-    }
-  }
 
   useEffect(() => {
-    loadWishlistData();
+    headers.token &&  getWishData();
   }, []);
 
   return (

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { CartContext } from "../../Context/CartContext";
 import toast from "react-hot-toast";
+import { WishlistContext } from "../../Context/WishListContext";
 
 export default function ProductDetails() {
   let { id, category } = useParams();
@@ -13,7 +14,8 @@ export default function ProductDetails() {
   const [isLoading, setIsLoading] = useState(null);
 
   let { addProductToCart, setCartCount } = useContext(CartContext);
-
+  const { wishlist, addToWishlist, removeFromWishlist , getWishData } =
+    useContext(WishlistContext);
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
 
@@ -76,6 +78,32 @@ export default function ProductDetails() {
       });
   }
 
+  const [isInWishlist, setIsInWishlist] = useState({}); 
+  useEffect(() => {
+    const updatedIsInWishlist = {};
+    wishlist?.forEach((product) => {
+      updatedIsInWishlist[product._id] = true;
+    });
+    setIsInWishlist(updatedIsInWishlist);
+  }, [wishlist]);
+  function handleWishlistToggle(product) {
+    if (isInWishlist[product._id]) {
+      removeFromWishlist(product._id);
+      setIsInWishlist((prevState) => ({
+        ...prevState,
+        [product._id]: false,
+      }));
+    } else {
+      addToWishlist(product);
+      setIsInWishlist((prevState) => ({
+        ...prevState,
+        [product._id]: true,
+      }));
+    }
+  }
+
+
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -118,6 +146,20 @@ export default function ProductDetails() {
               <i className="fa-solid fa-star flex self-center"></i>
             </div>
           </div>
+          <button
+                  onClick={() => handleWishlistToggle(productDetails)}
+                  className=" px-2 py-5 m-auto flex justify-between"
+                >
+                  <i
+                    className="fa-solid fa-heart self-center pe-2"
+                    style={{
+                      color: isInWishlist[productDetails._id] ? "red" : "black",
+                    }}
+                  ></i>
+                  <span className="text-sm">
+                    {isInWishlist[productDetails._id] ? "Remove From Wishlist" : "Add to Wishlist"}
+                  </span>
+                </button>
           <div className={style.button}>
             <div className={style.buttonLayer} />
             <button onClick={() => addProductBridge(productDetails._id)}>
@@ -160,6 +202,21 @@ export default function ProductDetails() {
                     <span className={style.priceNum}>{product.price} EGP</span>
                   </div>
                 </Link>
+                <button
+                  onClick={() => handleWishlistToggle(product)}
+                  className=" px-2 py-5 m-auto flex justify-between"
+                >
+                  <i
+                    className="fa-solid fa-heart self-center pe-2"
+                    style={{
+                      color: isInWishlist[product._id] ? "red" : "black",
+                    }}
+                  ></i>
+                  <span className="text-sm">
+                    {isInWishlist[product._id] ? "Remove From Wishlist" : "Add to Wishlist"}
+                  </span>
+                </button>
+                
                 <div className={style.buttonContainer}>
                   <div className={style.button}>
                     <div className={style.buttonLayer} />
