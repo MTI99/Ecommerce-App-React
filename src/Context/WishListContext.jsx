@@ -6,44 +6,41 @@ export const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
   const [wishlist, setWishlist] = useState([]);
-  let { userToken  } = useContext(UserContext)
+  let { userToken } = useContext(UserContext);
 
   let headers = {
     token: localStorage.getItem("userToken"),
   };
 
   function getLoggedWishList() {
-    return axios
-      .get("https://ecommerce.routemisr.com/api/v1/wishlist", {
-        headers,
-      })
-      
+    return axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
+      headers,
+    });
   }
 
   function addToWishlist(product) {
-    console.log(product.id);
-  return  axios
-      .post(
-        "https://ecommerce.routemisr.com/api/v1/wishlist",{
-          productId: product.id
-        },
-        {
-          headers, 
-        }
-      )
-      
-  }
-
-  function removeFromWishlist(productId) {
-    setWishlist((prevWishlist) =>
-      prevWishlist.filter((item) => item._id !== productId)
+    return axios.post(
+      "https://ecommerce.routemisr.com/api/v1/wishlist",
+      {
+        productId: product.id,
+      },
+      {
+        headers,
+      }
     );
   }
 
-
+  function removeFromWishlist(productId) {
+    return axios.delete(
+      `https://ecommerce.routemisr.com/api/v1/wishlist/${productId}`,
+      {
+        headers,
+      }
+    );
+  }
 
   useEffect(() => {
-    userToken &&  getLoggedWishList();
+    userToken && getLoggedWishList();
   }, [userToken]);
 
   return (
@@ -54,7 +51,7 @@ export function WishlistProvider({ children }) {
         removeFromWishlist,
         setWishlist,
         getLoggedWishList,
-        headers
+        headers,
       }}
     >
       {children}

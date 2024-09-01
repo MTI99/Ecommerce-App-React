@@ -66,15 +66,15 @@ export default function RecentProducts() {
     setCurrentPage(selected + 1);
   }
 
-  function handleWishlistToggle(product) {
+  async function handleWishlistToggle(product) {
     if (isInWishlist[product._id]) {
-      removeFromWishlist(product._id);
+      await removeFromWishlist(product.id);
       setIsInWishlist((prevState) => ({
         ...prevState,
         [product._id]: false,
       }));
     } else {
-      addToWishlist(product);
+      await addToWishlist(product);
       setIsInWishlist((prevState) => ({
         ...prevState,
         [product._id]: true,
