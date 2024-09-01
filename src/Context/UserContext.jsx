@@ -6,15 +6,15 @@ export let UserContext = createContext()
 
 export function UserContextProvider(props)
 { 
-    const [userLogIn, setUserLogIn] = useState(null)
+    const [userToken, setUserToken] = useState(null)
 
     useEffect( ()=> { 
         if (localStorage.getItem('userToken') !== null) { 
-            setUserLogIn(localStorage.getItem('userToken'))
+            setUserToken(localStorage.getItem('userToken'))
         }
     }, [] )
 
-    return <UserContext.Provider value={  { userLogIn , setUserLogIn }  }>
+    return <UserContext.Provider value={  { userToken , setUserToken }  }>
             {props.children }
     </UserContext.Provider>
 

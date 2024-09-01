@@ -4,11 +4,11 @@ import { UserContext } from "../../Context/UserContext";
 import { CartContext } from "../../Context/CartContext";
 
 export default function NavBar() {
-  let { userLogIn, setUserLogIn } = useContext(UserContext);
+  let { userToken, setUserToken } = useContext(UserContext);
   let { cartCount } = useContext(CartContext);
   let navigate = useNavigate();
   function logOut() {
-    setUserLogIn(null);
+    setUserToken(null);
     localStorage.removeItem("userToken");
     navigate("/login");
   }
@@ -31,10 +31,10 @@ export default function NavBar() {
           </a>
           {/* Navbar content */}
           <div
-            className={`flex justify-between ${userLogIn ? "flex-grow" : ""}`}
+            className={`flex justify-between ${userToken ? "flex-grow" : ""}`}
           >
             {/* Middle Links */}
-            {userLogIn ? (
+            {userToken ? (
               <div className="m-auto flex ">
                 <ul className="hidden md:flex space-x-8 justify-center flex-grow">
                   <NavLink
@@ -73,7 +73,7 @@ export default function NavBar() {
 
             {/* Right Links */}
             <div className="flex items-center space-x-4">
-              {userLogIn ? (
+              {userToken ? (
                 <ul className="hidden md:flex space-x-8">
                   <Link to={"/cart"} className="relative inline-block">
                     {/* Icon */}

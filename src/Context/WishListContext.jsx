@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { createContext, useState, useContext, useEffect } from "react";
+import { UserContext } from "./UserContext";
 
 export const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
   const [wishlist, setWishlist] = useState([]);
+  let { userToken  } = useContext(UserContext)
+
   let headers = {
     token: localStorage.getItem("userToken"),
   };
@@ -14,12 +17,21 @@ export function WishlistProvider({ children }) {
       .get("https://ecommerce.routemisr.com/api/v1/wishlist", {
         headers,
       })
-      .then((response) => response)
-      .catch((error) => error);
+      
   }
 
   function addToWishlist(product) {
-    setWishlist((prevWishlist) => [...prevWishlist, product]);
+    console.log(product.id);
+  return  axios
+      .post(
+        "https://ecommerce.routemisr.com/api/v1/wishlist",{
+          productId: product.id
+        },
+        {
+          headers, 
+        }
+      )
+      
   }
 
   function removeFromWishlist(productId) {
@@ -27,15 +39,12 @@ export function WishlistProvider({ children }) {
       prevWishlist.filter((item) => item._id !== productId)
     );
   }
-  async function getWishData() {
-    let res = await getLoggedWishList();
-    setWishlist(res?.data.data);
-  }
+
 
 
   useEffect(() => {
-    headers.token !==null &&  getWishData();
-  }, []);
+    userToken &&  getLoggedWishList();
+  }, [userToken]);
 
   return (
     <WishlistContext.Provider
@@ -45,7 +54,6 @@ export function WishlistProvider({ children }) {
         removeFromWishlist,
         setWishlist,
         getLoggedWishList,
-        getWishData,
         headers
       }}
     >

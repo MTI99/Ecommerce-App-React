@@ -1,49 +1,51 @@
-import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+    import axios from "axios";
+    import { createContext, useContext, useEffect, useState } from "react";
+import { UserContext } from "./UserContext";
 
+    export let CartContext = createContext();
 
-export let CartContext = createContext();
+    export function CartContextProvider(props) {
+    const [cartCount, setCartCount] = useState(null);
+    const [cartID, setcartID] = useState(null);
+    let { userToken , setUserToken } = useContext(UserContext)
 
-export function CartContextProvider(props) {
-    const [cartCount, setCartCount] = useState(null)
-    const [cartID, setcartID] = useState(null)
-    
-const [ isLoading , setIsLoading ] = useState(null)
-
-
-let headers = {
-token: localStorage.getItem("userToken"),
-};
+    let headers = {
+    token: localStorage.getItem("userToken"),
+    };
 
     async function getLoggedUserCart() {
-        return await axios
+    return await axios
         .get("https://ecommerce.routemisr.com/api/v1/cart", {
-            headers,
+        headers,
         })
         .then((response) => response)
         .catch((error) => error);
     }
 
     function addProductToCart(productId) {
-        return axios
-        .post("https://ecommerce.routemisr.com/api/v1/cart", {
+    return axios
+        .post(
+        "https://ecommerce.routemisr.com/api/v1/cart",
+        {
             productId,
         },
         {
-            headers
+            headers,
         }
         )
         .then((response) => response)
         .catch((error) => error);
     }
 
-    function updateProductCount(productId , count) {
-        return axios
-        .put(`https://ecommerce.routemisr.com/api/v1/cart/${productId}`, {
+    function updateProductCount(productId, count) {
+    return axios
+        .put(
+        `https://ecommerce.routemisr.com/api/v1/cart/${productId}`,
+        {
             count,
         },
         {
-            headers
+            headers,
         }
         )
         .then((response) => response)
@@ -51,53 +53,63 @@ token: localStorage.getItem("userToken"),
     }
 
     function deleteProductCart(productId) {
-        return axios
+    return axios
         .delete(`https://ecommerce.routemisr.com/api/v1/cart/${productId}`, {
-        headers
-        }
-        )
+        headers,
+        })
         .then((response) => response)
         .catch((error) => error);
     }
     function clearCart() {
-        return axios
+    return axios
         .delete(`https://ecommerce.routemisr.com/api/v1/cart`, {
-        headers
-        }
-        )
+        headers,
+        })
         .then((response) => response)
         .catch((error) => error);
     }
 
-    function checkOut(cartId , url , formVlaues ) {
-        return axios
-        .post(` https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${url} `, {
-            shippingAddress:formVlaues ,
+    function checkOut(cartId, url, formVlaues) {
+    return axios
+        .post(
+        ` https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${url} `,
+        {
+            shippingAddress: formVlaues,
         },
         {
-            headers
+            headers,
         }
         )
         .then((response) => response)
         .catch((error) => error);
     }
 
-    async function getCartData() { 
-        let res = await getLoggedUserCart()
-        setCartCount(res?.data.numOfCartItems)
-        setcartID(res?.data.cartId)
+    async function getCartData() {
+    let res = await getLoggedUserCart();
+    setCartCount(res?.data?.numOfCartItems);
+    setcartID(res?.data?.cartId);
     }
 
-
-
     useEffect(() => {
-    headers.token !==null &&  getCartData()
-    }, [])
-
+        userToken && getCartData();
+    }, [userToken]);
 
     return (
-        <CartContext.Provider value={{ getLoggedUserCart , addProductToCart , updateProductCount , deleteProductCart , clearCart , checkOut , cartCount , setCartCount , getCartData ,headers , cartID }}>
+    <CartContext.Provider
+        value={{
+        getLoggedUserCart,
+        addProductToCart,
+        updateProductCount,
+        deleteProductCart,
+        clearCart,
+        checkOut,
+        cartCount,
+        setCartCount,
+        getCartData,
+        cartID,
+        }}
+    >
         {props.children}
-        </CartContext.Provider>
+    </CartContext.Provider>
     );
-} 
+    }
