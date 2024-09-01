@@ -15,8 +15,8 @@ let headers = {
 token: localStorage.getItem("userToken"),
 };
 
-    function getLoggedUserCart() {
-        return axios
+    async function getLoggedUserCart() {
+        return await axios
         .get("https://ecommerce.routemisr.com/api/v1/cart", {
             headers,
         })
@@ -91,7 +91,7 @@ token: localStorage.getItem("userToken"),
 
 
     useEffect(() => {
-      headers.token &&  getCartData()
+    headers.token !==null &&  getCartData()
     }, [])
 
 

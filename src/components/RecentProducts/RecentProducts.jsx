@@ -46,10 +46,10 @@ export default function RecentProducts() {
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
-
-    if (finalRes.data.status === "success") {
-      setCartCount(finalRes.data.numOfCartItems);
-      toast.success(finalRes.data.message, {
+    console.log(finalRes);
+    if (finalRes?.data.status === "success") {
+      setCartCount(finalRes?.data.numOfCartItems);
+      toast.success(finalRes?.data.message, {
         duration: 1000,
         position: "top-right",
       });

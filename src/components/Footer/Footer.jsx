@@ -10,7 +10,7 @@ export default function Footer() {
   return <>
   
   
-<footer className="footer-container mt-10">
+<footer className="footer-container mt-10 mb-0">
       <div className="app-download-section">
         <h3>Get the FreshCart app</h3>
         <p>We will send you a link, open it on your phone to download the app.</p>

@@ -2,6 +2,7 @@
     background-color: #f1f3f6;
     padding: 20px;
     text-align: center;
+
   }
   
   .app-download-section h3 {
@@ -27,7 +28,7 @@
   }
   
   .share-link-button {
-    background-color: #007bff; /* اللون الأزرق */
+    background-color: #007bff; 
     color: white;
     border: none;
     padding: 10px 20px;
@@ -37,7 +38,7 @@
   }
   
   .share-link-button:hover {
-    background-color: #0056b3; /* لون أزرق أغمق عند التمرير */
+    background-color: #0056b3; 
   }
   
   .footer-bottom-section {

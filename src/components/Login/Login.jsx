@@ -8,12 +8,12 @@ import { UserContext } from "../../Context/UserContext";
 
 export default function Login() {
 
-  let { userLogIn , setUserLogIn } = useContext(UserContext)
+  let { userId , setUserLogIn } = useContext(UserContext)
   let navigate = useNavigate();
   const [apiError, setApiError] = useState("");
 
   async function handleLogIn(formVlaues) {
-    let { data } = await axios
+    return await axios
       .post("https://ecommerce.routemisr.com/api/v1/auth/signin", formVlaues)
       .then((apiResponse) => {
         setApiError(null);
@@ -191,10 +191,16 @@ export default function Login() {
         >
           Submit
         </button>
-        <p className="py-5 text-center ">
+        <p className="pt-5 text-center ">
+          Forget Password ?{" "}
+          <span className="font-semibold">
+            <Link to={"/forgetpass"}>Reset It Now</Link>
+          </span>
+        </p>
+        <p className=" text-center ">
           Doesn't Have Account ?{" "}
           <span className="font-semibold">
-            <Link to={"/regester"}>Register Now</Link>{" "}
+            <Link to={"/regester"}>Register Now</Link>
           </span>
         </p>
       </form>

@@ -25,6 +25,9 @@ import Brands from "./components/Brands/Brands";
 import Categories from "./components/Categories/Categories";
 import { WishlistProvider } from "./Context/WishListContext";
 import WishList from "./components/WishList/WishList";
+import ForgetPass from "./components/ForgetPass/ForgetPass";
+import VerifyCode from "./components/VerifyCode/VerifyCode";
+import ResetPass from "./components/ResetPass/ResetPass";
 // import BrandDetails from "./components/BrandDetails/BrandDetails";
 const queryClient = new QueryClient();
 
@@ -53,7 +56,7 @@ let router = createHashRouter([
         path: "brands",
         element: (
           <ProtectedRoute>
-            <Brands/>
+            <Brands />
           </ProtectedRoute>
         ),
       },
@@ -77,7 +80,7 @@ let router = createHashRouter([
         path: "wishlist",
         element: (
           <ProtectedRoute>
-            <WishList/>
+            <WishList />
           </ProtectedRoute>
         ),
       },
@@ -85,7 +88,7 @@ let router = createHashRouter([
         path: "checkout",
         element: (
           <ProtectedRoute>
-            <Checkout/>
+            <Checkout />
           </ProtectedRoute>
         ),
       },
@@ -93,7 +96,7 @@ let router = createHashRouter([
         path: "allorders",
         element: (
           <ProtectedRoute>
-            <Orders/>
+            <Orders />
           </ProtectedRoute>
         ),
       },
@@ -101,11 +104,23 @@ let router = createHashRouter([
         path: "categories",
         element: (
           <ProtectedRoute>
-            <Categories/>
+            <Categories />
           </ProtectedRoute>
         ),
       },
-        { path: "regester", element: <Regester /> },
+      {
+        path: "forgetpass",
+        element: <ForgetPass />,
+      },
+      {
+        path: "verifycode",
+        element: <VerifyCode />,
+      },
+      {
+        path: "resetpass",
+        element: <ResetPass />,
+      },
+      { path: "regester", element: <Regester /> },
       { path: "login", element: <Login /> },
       { path: "*", element: <NotFound /> },
     ],
@@ -115,14 +130,13 @@ let router = createHashRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-
       <UserContextProvider>
         <CartContextProvider>
-        <WishlistProvider>
-        <RouterProvider router={router}></RouterProvider>
-        <Toaster/>
-        <ReactQueryDevtools/>
-        </WishlistProvider>
+          <WishlistProvider>
+            <RouterProvider router={router}></RouterProvider>
+            <Toaster />
+            <ReactQueryDevtools />
+          </WishlistProvider>
         </CartContextProvider>
       </UserContextProvider>
     </QueryClientProvider>
