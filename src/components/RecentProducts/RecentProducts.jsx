@@ -7,6 +7,7 @@ import { CartContext } from "../../Context/CartContext";
 import toast from "react-hot-toast";
 import Pagenation from "../Pagenation/Pagenation";
 import { WishlistContext } from "../../Context/WishListContext";
+import { UserContext } from "../../Context/UserContext";
 
 export default function RecentProducts() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,38 +24,41 @@ export default function RecentProducts() {
     select: (data) => data.data.data,
   });
 
-
   let { addProductToCart, setCartCount } = useContext(CartContext);
-  const { wishlist, addToWishlist, removeFromWishlist , getWishData } =
-    useContext(WishlistContext);
+  const {
+    wishlist,
+    addToWishlist,
+    removeFromWishlist,
+    headers,
+    getLoggedWishList,
+    setWishlist,
+  } = useContext(WishlistContext);
 
-
-
-
-    
-  const [isInWishlist, setIsInWishlist] = useState({}); 
+  const [isInWishlist, setIsInWishlist] = useState({});
   useEffect(() => {
     const updatedIsInWishlist = {};
     wishlist?.forEach((product) => {
       updatedIsInWishlist[product._id] = true;
     });
     setIsInWishlist(updatedIsInWishlist);
+    getWishlist();
   }, [wishlist, data]);
 
-
-
+  async function getWishlist() {
+    let res = await getLoggedWishList();
+    setWishlist(res.data.data);
+  }
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
-    console.log(finalRes);
-    if (finalRes?.data.status === "success") {
+    if (finalRes?.data?.status === "success") {
       setCartCount(finalRes?.data.numOfCartItems);
       toast.success(finalRes?.data.message, {
         duration: 1000,
         position: "top-right",
       });
     } else {
-      toast.error(finalRes.data.message);
+      toast.error(finalRes?.data.message);
     }
   }
 
@@ -143,10 +147,12 @@ export default function RecentProducts() {
                     }}
                   ></i>
                   <span className="text-sm">
-                    {isInWishlist[product._id] ? "Remove From Wishlist" : "Add to Wishlist"}
+                    {isInWishlist[product._id]
+                      ? "Remove From Wishlist"
+                      : "Add to Wishlist"}
                   </span>
                 </button>
-                
+
                 <div className={style.button}>
                   <div className={style.buttonLayer} />
                   <button onClick={() => addProductBridge(product._id)}>

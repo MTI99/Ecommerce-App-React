@@ -19,37 +19,41 @@ export default function Cart() {
 
   async function getCartBridge() {
     let res = await getLoggedUserCart();
-    setCartDetails(res.data.data);
-    setCartCount(res.data.numOfCartItems)
+    setCartDetails(res?.data.data);
+    setCartCount(res?.data.numOfCartItems)
     setIsLoading(false);
   }
 
   async function updateCountBridge(productId, count) {
     setIsLoading(true); // Show loader while updating
     let res = await updateProductCount(productId, count);
-    setCartDetails(res.data.data);
+    setCartDetails(res?.data.data);
     setIsLoading(false);
   }
 
   async function deleteProductBridge(productId) {
     setIsLoading(true); // Show loader while deleting
     let res = await deleteProductCart(productId);
-    setCartDetails(res.data.data);
-    setCartCount(res.data.numOfCartItems);
+    setCartDetails(res?.data.data);
+    setCartCount(res?.data.numOfCartItems);
     setIsLoading(false);
   }
 
   async function clearCartBridge() {
     setIsLoading(true); // Show loader while clearing cart
     let res = await clearCart();
-    setCartDetails(res.data.data);
-    setCartCount(res.data.numOfCartItems);
+    setCartDetails(res?.data.data);
+    setCartCount(res?.data.numOfCartItems);
     setIsLoading(false);
   }
 
   useEffect(() => {
-    getCartBridge();
-    getCartData()
+    const token = localStorage.getItem("userToken");
+    if (token) {
+        getCartData();
+        getCartBridge();
+
+    }
   }, []);
 
   return (

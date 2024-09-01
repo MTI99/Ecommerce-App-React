@@ -15,13 +15,13 @@ export default function LayOut() {
   
   
   <NavBar/>
-  
-  
+
   <Outlet/>
-  
-  
   <Footer/>
+
+
   
+
   
   
   

@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { WishlistContext } from "../../Context/WishListContext";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import style from "./WishList.module.css";
 import { CartContext } from "../../Context/CartContext";
 import toast, { Toaster } from "react-hot-toast";
+import { UserContext } from "../../Context/UserContext";
 
 export default function Wishlist() {
   const {
@@ -14,17 +15,15 @@ export default function Wishlist() {
     getLoggedWishList,
     setWishlist,
   } = useContext(WishlistContext);
+  let { userToken } = useContext(UserContext);
   const { addProductToCart, setCartCount } = useContext(CartContext);
+  const [isLoading, setIsLoading] = useState(true);
 
-  function getWishlist() {
-    return getLoggedWishList();
+  async function getWishlist() {
+    let res = await getLoggedWishList();
+    setWishlist(res.data.data);
+    setIsLoading(false);
   }
-
-  let { data, isError, error, isLoading } = useQuery({
-    queryKey: ["wishlistProducts"],
-    queryFn: getWishlist,
-    select: (data) => data.data.data,
-  });
 
   async function addProductBridge(productId) {
     let finalRes = await addProductToCart(productId);
@@ -39,27 +38,19 @@ export default function Wishlist() {
     }
   }
 
-  if (isLoading) {
-    return (
-      <>
-        <div className="loader-container">
-          <div className="loader"></div>
-        </div>
-      </>
-    );
-  }
-  if (isError) {
-    return (
-      <>
-        <div className="w-full h-full bg-gray-400 text-center">
-          <p>{error.message}</p>
-        </div>
-      </>
-    );
-  }
+  useEffect(() => {
+    setIsLoading(true);
+    userToken && getWishlist();
+    console.log(wishlist);
+  }, [userToken]);
 
   return (
     <>
+      {isLoading ? (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      ) : null}
       <div className="container">
         <h2 className="mx-auto text-3xl text-center my-10 font-bold border-b-2 pb-2 border-blue-500 w-fit">
           Your Wishlist
@@ -85,11 +76,11 @@ export default function Wishlist() {
               </div>
             </div>
           ) : (
-            wishlist.map((product) => (
+            wishlist?.map((product) => (
               <div className="inner w-1/6 px-2 mb-4" key={product._id}>
                 <div className={`${style.productCard}`}>
                   <Link
-                    to={`/productdetails/${product.category.name}/${product.id}`}
+                    to={`/productdetails/${product?.category?.name}/${product.id}`}
                   >
                     <div className={style.logoCart}>
                       <i className="bx bx-shopping-bag" />
