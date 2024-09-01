@@ -14,7 +14,7 @@ export default function NavBar() {
   }
   return (
     <>
-      <nav className="bg-white border-gray-200 dark:bg-gray-900 relative">
+      <nav className="border-gray-200 bg-gray-900 relative">
         <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
           <a
             href="#"
@@ -23,10 +23,10 @@ export default function NavBar() {
             <img
               src="https://flowbite.com/docs/images/logo.svg"
               className="h-8"
-              alt="Flowbite Logo"
+              alt="FreshCart Logo"
             />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Fresh Cart
+            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+              FreshCart
             </span>
           </a>
           {/* Navbar content */}

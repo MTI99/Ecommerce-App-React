@@ -34,7 +34,7 @@ export function WishlistProvider({ children }) {
 
 
   useEffect(() => {
-    headers.token &&  getWishData();
+    headers.token !==null &&  getWishData();
   }, []);
 
   return (
@@ -46,6 +46,7 @@ export function WishlistProvider({ children }) {
         setWishlist,
         getLoggedWishList,
         getWishData,
+        headers
       }}
     >
       {children}

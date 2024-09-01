@@ -16,10 +16,10 @@ export default function Wishlist() {
   } = useContext(WishlistContext);
   const { addProductToCart, setCartCount } = useContext(CartContext);
 
-
   function getWishlist() {
     return getLoggedWishList();
   }
+
   let { data, isError, error, isLoading } = useQuery({
     queryKey: ["wishlistProducts"],
     queryFn: getWishlist,
@@ -58,7 +58,6 @@ export default function Wishlist() {
     );
   }
 
-
   return (
     <>
       <div className="container">
@@ -68,7 +67,23 @@ export default function Wishlist() {
         </h2>
         <div className="row mt-10">
           {wishlist.length === 0 ? (
-            <p>Your wishlist is empty.</p>
+            <div className="flex flex-col items-center justify-center h-screen container">
+              <div className="rounded-lg flex flex-col items-center w-full h-full">
+                <div className="img-cover-wish h-3/4 w-full"></div>
+                <p className="text-3xl font-semibold text-gray-800 mb-2">
+                  Oops! Your WishList is empty!
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Looks like you haven't added anything to your cart yet
+                </p>
+                <Link to={"/"}>
+                  <div className={` ${style.button} w-full px-8 `}>
+                    <div className={style.buttonLayer} />
+                    <button>Shop Now</button>
+                  </div>
+                </Link>
+              </div>
+            </div>
           ) : (
             wishlist.map((product) => (
               <div className="inner w-1/6 px-2 mb-4" key={product._id}>

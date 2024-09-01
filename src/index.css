@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 .active {
     color: rgb(34, 105, 204) !important;
 }
@@ -42,6 +40,7 @@
     aspect-ratio: 1;
     display: grid;
     animation: l14 4s infinite;
+    -webkit-animation: l14 4s infinite;
 }
 
 .loader::before,
@@ -69,6 +68,13 @@
 
 .img-cover { 
     background-image: url(assets/images/empty-cart.webp);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+.img-cover-wish { 
+    background-image: url(assets/images/empty-wish.webp);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
