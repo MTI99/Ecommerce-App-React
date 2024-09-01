@@ -38,10 +38,26 @@ export default function Wishlist() {
     }
   }
 
+  function handleRemoveFromWishlist(productId) {
+    removeFromWishlist(productId)
+      .then(() => {
+        setWishlist(
+          (prevWishlist) =>
+            prevWishlist.filter((product) => product._id !== productId));
+        toast.success("Removed from wishlist!", {
+          duration: 1000,
+          position: "top-right",
+        });
+      })
+      .catch((error) => {
+        toast.error("Failed to remove from wishlist.");
+      });
+  }
+
+
   useEffect(() => {
     setIsLoading(true);
     userToken && getWishlist();
-    console.log(wishlist);
   }, [userToken]);
 
   return (
@@ -109,8 +125,8 @@ export default function Wishlist() {
                     </div>
                   </Link>
                   <button
-                    onClick={() => removeFromWishlist(product._id)}
-                    className=" px-2 py-3 m-auto flex justify-between"
+                    onClick={() => handleRemoveFromWishlist(product._id)}
+                    className="px-2 py-3 m-auto flex justify-between"
                   >
                     <i className="fa-solid fa-heart self-center pe-2 text-red-500"></i>
                     <span className="text-sm">Remove From Wishlist</span>
